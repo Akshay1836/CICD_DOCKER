@@ -3,6 +3,7 @@ name: CI/CD Pipeline
 on:
   push:
     branches: [master]
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,10 +22,7 @@ jobs:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           IMAGE_NAME: my-image
         run: |
-          set -e
-          echo "Building Docker image: $DOCKERHUB_USERNAME/$IMAGE_NAME:latest"
-          docker build -t $DOCKERHUB_USERNAME/$IMAGE_NAME:latest .
-          echo "Pushing Docker image to DockerHub..."
+          docker build --platform=linux/amd64 -t $DOCKERHUB_USERNAME/$IMAGE_NAME .
           docker push $DOCKERHUB_USERNAME/$IMAGE_NAME:latest
 
   test:
